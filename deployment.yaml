@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-php
+  labels:
+    app: sample-php
+spec:
+  selector:
+    matchLabels:
+      app: sample-php
+  template:
+    metadata:
+      labels:
+        app: sample-php
+    spec:
+      containers:
+      - image: ip_address_of_the_machine:5000/sample-php:latest
+        name: php-sample
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-php-svc
+spec:
+  ports:
+  - name: "sample-php"
+    targetPort: 80
+    port: 80
+    nodePort: 30270
+    protocol: TCP
+  selector:
+    app: sample-php
+  type: NodePort
