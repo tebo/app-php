@@ -28,7 +28,7 @@ podTemplate(yaml: '''
 ''') {
   node(POD_LABEL) {
     writeFile file: 'Dockerfile', text: 'FROM scratch'
-    environment {
+    container('docker') {
         REGISTRY = 'harbor.et.bo'
         REGISTRY_IMAGE = "$REGISTRY/endeges/jenkins-test"
         DOCKERFILE_PATH = 'Dockerfile'
@@ -38,8 +38,6 @@ podTemplate(yaml: '''
 
         CURRENT_BUILD_NUMBER = "${currentBuild.number}"
         GIT_COMMIT_SHORT = 1 //sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
-    }
-    container('docker') {
       sh 'docker build --tag $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH .'
     }
   }
