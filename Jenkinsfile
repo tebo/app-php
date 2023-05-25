@@ -1,14 +1,3 @@
-environment {
-        REGISTRY = 'harbor.et.bo'
-        REGISTRY_IMAGE = "$REGISTRY/endeges/jenkins-test"
-        DOCKERFILE_PATH = 'Dockerfile'
-
-        REGISTRY_USER = credentials('harbor-user')
-        REGISTRY_PASSWORD = credentials('harbor-password')
-
-        CURRENT_BUILD_NUMBER = "${currentBuild.number}"
-        GIT_COMMIT_SHORT = 1 //sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
-    }
 podTemplate(yaml: '''
               apiVersion: v1
               kind: Pod
@@ -37,6 +26,17 @@ podTemplate(yaml: '''
                   - name: docker-socket
                     mountPath: /var/run
 ''') {
+  environment {
+        REGISTRY = 'harbor.et.bo'
+        REGISTRY_IMAGE = "$REGISTRY/endeges/jenkins-test"
+        DOCKERFILE_PATH = 'Dockerfile'
+
+        REGISTRY_USER = credentials('harbor-user')
+        REGISTRY_PASSWORD = credentials('harbor-password')
+
+        CURRENT_BUILD_NUMBER = "${currentBuild.number}"
+        GIT_COMMIT_SHORT = 1 //sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
+    } 
   node(POD_LABEL) {
     writeFile file: 'Dockerfile', text: 'FROM scratch'
     
