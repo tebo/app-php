@@ -42,7 +42,7 @@ podTemplate(yaml: '''
     writeFile file: 'Dockerfile', text: 'FROM scratch'
     
     container('docker') {
-      sh 'docker build -t $REGISTRY_IMAGE:$GIT_COMMIT_SHORT-jenkins-$CURRENT_BUILD_NUMBER -f $DOCKERFILE_PATH .'
+      sh 'docker build -t harbor.et.bo/endeges/jenkins-test-jenkins -f Dockerfile .'
     }
   }
 }
