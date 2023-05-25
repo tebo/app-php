@@ -26,7 +26,9 @@ podTemplate(yaml: '''
                   - name: docker-socket
                     mountPath: /var/run
 ''') {
-  environment {
+  
+  node(POD_LABEL) {
+    environment {
         REGISTRY = 'harbor.et.bo'
         REGISTRY_IMAGE = "$REGISTRY/endeges/jenkins-test"
         DOCKERFILE_PATH = 'Dockerfile'
@@ -37,7 +39,6 @@ podTemplate(yaml: '''
         CURRENT_BUILD_NUMBER = "${currentBuild.number}"
         GIT_COMMIT_SHORT = 1 //sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
     } 
-  node(POD_LABEL) {
     writeFile file: 'Dockerfile', text: 'FROM scratch'
     
     container('docker') {
