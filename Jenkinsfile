@@ -27,7 +27,7 @@ spec:
 
         CURRENT_BUILD_NUMBER = "${currentBuild.number}"
         GIT_COMMIT_SHORT = sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
-        echo GIT_COMMIT_SHORT
+        sh 'echo GIT_COMMIT_SHORT'
     }
 
     stages {
