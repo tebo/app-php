@@ -1,5 +1,51 @@
 pipeline {
     agent {
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker
+    image: docker
+    command:
+    - cat
+    tty: true
+    securityContext:
+    privileged: true
+'''
+            defaultContainer 'docker'
+        }
+    }
+    environment {
+        REGISTRY = 'harbor.et.bo'
+        REGISTRY_IMAGE = "$REGISTRY/endeges/jenkins-test"
+        DOCKERFILE_PATH = 'Dockerfile'
+
+        REGISTRY_USER = credentials('harbor-user')
+        REGISTRY_PASSWORD = credentials('harbor-password')
+
+        CURRENT_BUILD_NUMBER = "${currentBuild.number}"
+        GIT_COMMIT_SHORT = sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
+        echo GIT_COMMIT_SHORT
+    }
+
+    stages {
+        stage('Main') {
+            steps {
+                sh 'hostname'
+                sh 'dockerd & > /dev/null'
+                sleep(time: 10, unit: "SECONDS")
+                
+            }
+        }
+    }
+}
+
+
+/*
+pipeline {
+    agent {
         kubernetes  {
             label 'jenkins-1slave'
              defaultContainer 'jnlp'
@@ -55,4 +101,4 @@ spec:
         }
 
     }
-}
+}*/
