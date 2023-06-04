@@ -7,7 +7,7 @@ kind: Pod
 spec:
   containers:
   - name: docker
-    image: docker
+    image: harbor.et.bo/endeges/endeges
     command:
     - cat
     tty: true
