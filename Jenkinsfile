@@ -7,7 +7,7 @@ kind: Pod
 spec:
   containers:
   - name: docker
-    image: docker:dind
+    image: jenkins/agent
     command:
     - cat
     tty: true
@@ -26,7 +26,7 @@ spec:
         REGISTRY_PASSWORD = credentials('harbor-password')
 
         CURRENT_BUILD_NUMBER = "${currentBuild.number}"
-        GIT_COMMIT_SHORT = sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
+        GIT_COMMIT_SHORT = 1 //sh(returnStdout: true, script: "git rev-parse --short ${GIT_COMMIT}").trim()
        // sh 'echo GIT_COMMIT_SHORT'
     }
 
