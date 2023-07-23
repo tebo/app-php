@@ -47,7 +47,7 @@ podTemplate(yaml: '''
     stage('Construir contenedor') {
       container('kaniko') {
         stage('Push to registry') {
-          echo ${BUILD_NUMBER}
+          echo ${env.BUILD_NUMBER}
           sh '''
             /kaniko/executor --context `pwd` --destination harbor.et.bo/endeges/app-php:latest
           '''
