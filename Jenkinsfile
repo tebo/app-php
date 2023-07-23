@@ -48,7 +48,7 @@ podTemplate(yaml: '''
       container('kaniko') {
         stage('Push to registry') {
           sh '''
-            /kaniko/executor --context `pwd` --destination harbor.et.bo/endeges/app-php:latest
+            /kaniko/executor --context `pwd` --destination harbor.et.bo/endeges/app-php:${env.GIT_COMMIT}
           '''
         }
       }
