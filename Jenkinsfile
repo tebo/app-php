@@ -33,10 +33,10 @@ podTemplate(yaml: '''
               path: config.json
 ''') {
   node(POD_LABEL) {
-    stage('Get a Maven project') {
+    stage('preparar codigo') {
       git url: 'https://github.com/tebo/app-php.git', branch: 'master'
       container('maven') {
-        stage('Build a Maven project') {
+        stage('Descarga codigo') {
           sh '''
           echo pwd
           '''
@@ -44,11 +44,11 @@ podTemplate(yaml: '''
       }
     }
 
-    stage('Build Java Image') {
+    stage('Construir contenedor') {
       container('kaniko') {
-        stage('Build a Go project') {
+        stage('Push to registry') {
           sh '''
-            /kaniko/executor --context `pwd` --destination harbor.et.bo/endeges/app-php:1.0
+            /kaniko/executor --context `pwd` --destination harbor.et.bo/endeges/app-php:latest
           '''
         }
       }
