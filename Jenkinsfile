@@ -49,7 +49,7 @@ podTemplate(yaml: '''
         stage('Push to registry') {
           echo "${env.BUILD_NUMBER}"
           sh '''
-            /kaniko/executor --context `pwd` --destination harbor.et.bo/endeges/app-php:"${env.BUILD_NUMBER}"
+            /kaniko/executor --context `pwd` --destination harbor.et.bo/endeges/app-php:${env.BUILD_NUMBER}
           '''
         }
       }
